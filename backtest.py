@@ -46,32 +46,32 @@ class backtest:
                 currWallet = self.wallet.current_stat()
                 # get operation from strategy
                 action, volume = self.strategy.get_Option(data['date'], currWallet)
-                print(action)
+                print('action is: ', action)
+                print('volume is: ', volume)
+                #print(action)
                 # trade robot execute the trade action, return
                 # use today's close price as the trade price
                 self.trade.get_Currentwallet(data['close'],
                                              currWallet['remainCapital'][self.currentIndex],
                                              currWallet['currentPosition'][self.currentIndex])
                 if action == 'buy':
-                    print('operate buy')
                     # trade_Robot will print the error message if the trade is failed
                     newCapital, newPosition, p, t, action = self.trade.buy(volume)
                     if action == 'fail':
                         break
 
                 elif action == 'sell':
-                    print('operate sell')
                     newCapital, newPosition, p, t, action = self.trade.sell(volume)
                     if action == 'fail':
                         break
                 else:
-                    print('no action today')
+                    print('lazy, no action today')
                     newCapital, newPosition, p, t, action = self.trade.no_Action()
                 # update wallet
 
                 self.wallet.update_Wallet(data['date'], newCapital, newPosition, p)
                 print('wallet_updated')
-                print(currWallet)
+                print(self.wallet.current_stat())
 
                 # update index, and go to next day
 
